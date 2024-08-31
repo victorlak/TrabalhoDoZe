@@ -4,6 +4,9 @@
 
 package com.mycompany.trabalhobd;
 
+import com.mycompany.trabalhobd.view.Departamento;
+
+
 /**
  *
  * @author 14626232639
@@ -11,6 +14,7 @@ package com.mycompany.trabalhobd;
 public class TrabalhoBD {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Departamento h = new Departamento();
+        h.setVisible(true);
     }
 }

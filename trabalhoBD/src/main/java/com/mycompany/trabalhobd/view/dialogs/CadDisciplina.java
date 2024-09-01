@@ -4,7 +4,11 @@
  */
 package com.mycompany.trabalhobd.view.dialogs;
 
+import com.mycompany.trabalhobd.connection.SQLiteConnector;
 import com.mycompany.trabalhobd.controller.DisciplinaController;
+import com.mycompany.trabalhobd.model.dao.IDao;
+import com.mycompany.trabalhobd.model.dao.IDaoDisciplinaBanco;
+import java.sql.SQLException;
 
 /**
  *
@@ -12,12 +16,16 @@ import com.mycompany.trabalhobd.controller.DisciplinaController;
  */
 public class CadDisciplina extends javax.swing.JDialog {
 
-    Boolean editando;
+    private Boolean editando;
     String codigoEditando;
+    DisciplinaController disciplinaController;
     
-    public CadDisciplina(java.awt.Frame parent, boolean modal) {
+    public CadDisciplina(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
         initComponents();
+        SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
+        IDao repositorio = new IDaoDisciplinaBanco(conector.getConnection());
+        disciplinaController = new DisciplinaController(repositorio);
         editando = false;
         codigoEditando = null;
     }
@@ -173,8 +181,11 @@ public class CadDisciplina extends javax.swing.JDialog {
     }//GEN-LAST:event_edtProfessorMinistranteActionPerformed
 
     private void btnCadastrarDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarDisciplinaActionPerformed
+        System.out.println("fghjklkjhgfdfghjklç");
         if(this.editando){
-           
+           disciplinaController.atualizarDisciplina(edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());
+        }else{
+            disciplinaController.adicionarDisciplina(edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());
         }
     }//GEN-LAST:event_btnCadastrarDisciplinaActionPerformed
 
@@ -193,45 +204,7 @@ public class CadDisciplina extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                CadDisciplina dialog = new CadDisciplina(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrarDisciplina;

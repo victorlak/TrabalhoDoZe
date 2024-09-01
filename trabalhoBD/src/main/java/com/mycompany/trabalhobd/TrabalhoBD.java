@@ -5,6 +5,7 @@
 package com.mycompany.trabalhobd;
 
 import com.mycompany.trabalhobd.view.Departamento;
+import java.sql.SQLException;
 
 
 /**
@@ -13,7 +14,7 @@ import com.mycompany.trabalhobd.view.Departamento;
  */
 public class TrabalhoBD {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException  {
         Departamento h = new Departamento();
         h.setVisible(true);
     }

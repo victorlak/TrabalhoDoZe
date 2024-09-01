@@ -13,6 +13,13 @@ public class Disciplina {
     private String profMinistrante;
     private String nome;
 
+    public Disciplina() {
+        this.codigo = "";
+        this.nome = "";
+        this.profMinistrante = "";
+    }
+    
+    
     public Disciplina(String codigo, String profMinistrante, String nome) {
         this.codigo = codigo;
         this.profMinistrante = profMinistrante;

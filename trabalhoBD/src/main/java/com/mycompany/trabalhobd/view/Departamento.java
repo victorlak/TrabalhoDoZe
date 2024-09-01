@@ -7,6 +7,9 @@ package com.mycompany.trabalhobd.view;
 import com.mycompany.trabalhobd.view.dialogs.CadAluno;
 import com.mycompany.trabalhobd.view.dialogs.CadDisciplina;
 import com.mycompany.trabalhobd.view.dialogs.CadProfessor;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,7 +23,7 @@ public class Departamento extends javax.swing.JFrame {
     /**
      * Creates new form Departamento
      */
-    public Departamento() {
+    public Departamento() throws SQLException  {
         initComponents();
         cadAluno = new CadAluno(this, true);
         cadDisciplina = new CadDisciplina(this, true);
@@ -141,7 +144,11 @@ public class Departamento extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Departamento().setVisible(true);
+                try {
+                    new Departamento().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Departamento.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

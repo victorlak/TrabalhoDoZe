@@ -4,18 +4,22 @@
  */
 package com.mycompany.trabalhobd.view.dialogs;
 
+import com.mycompany.trabalhobd.controller.DisciplinaController;
+
 /**
  *
  * @author USUARIO
  */
 public class CadDisciplina extends javax.swing.JDialog {
 
-    /**
-     * Creates new form CadAluno
-     */
+    Boolean editando;
+    String codigoEditando;
+    
     public CadDisciplina(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        editando = false;
+        codigoEditando = null;
     }
 
     /**
@@ -38,6 +42,9 @@ public class CadDisciplina extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         btnCadastrarDisciplina = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -61,7 +68,33 @@ public class CadDisciplina extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        btnCadastrarDisciplina.setText("Cadastrar Disciplina");
+        btnCadastrarDisciplina.setText("CADASTRAR");
+        btnCadastrarDisciplina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarDisciplinaActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("EDITAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("EXCLUIR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("CANCELAR");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,7 +119,14 @@ public class CadDisciplina extends javax.swing.JDialog {
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(edtProfessorMinistrante, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnCadastrarDisciplina))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCadastrarDisciplina)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3)))
                         .addGap(0, 14, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -104,7 +144,11 @@ public class CadDisciplina extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(edtProfessorMinistrante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnCadastrarDisciplina)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCadastrarDisciplina)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                 .addContainerGap())
@@ -112,10 +156,39 @@ public class CadDisciplina extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void limparCampos(){
+        edtCodigo.setText("");
+        edtProfessorMinistrante.setText("");
+        edtNome.setText("");
+        
+        habilitarCampos(false);
+    }
+    private void habilitarCampos(Boolean habilitar){
+        edtCodigo.setEnabled(habilitar);
+        edtProfessorMinistrante.setEnabled(habilitar);
+        edtNome.setEnabled(habilitar);
+    }
     private void edtProfessorMinistranteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtProfessorMinistranteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_edtProfessorMinistranteActionPerformed
+
+    private void btnCadastrarDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarDisciplinaActionPerformed
+        if(this.editando){
+           
+        }
+    }//GEN-LAST:event_btnCadastrarDisciplinaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,6 +238,9 @@ public class CadDisciplina extends javax.swing.JDialog {
     private javax.swing.JTextField edtCodigo;
     private javax.swing.JTextField edtNome;
     private javax.swing.JTextField edtProfessorMinistrante;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

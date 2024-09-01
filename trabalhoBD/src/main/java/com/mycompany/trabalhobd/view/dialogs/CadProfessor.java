@@ -10,12 +10,11 @@ package com.mycompany.trabalhobd.view.dialogs;
  */
 public class CadProfessor extends javax.swing.JDialog {
 
-    /**
-     * Creates new form CadProfessor
-     */
+    Boolean editando;
     public CadProfessor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        editando = false;
     }
 
     /**
@@ -40,6 +39,9 @@ public class CadProfessor extends javax.swing.JDialog {
         btnCadastrarProf = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -61,11 +63,22 @@ public class CadProfessor extends javax.swing.JDialog {
 
         jLabel5.setText("MATERIA:");
 
-        btnCadastrarProf.setText("CADASTRAR PROFESSOR");
+        btnCadastrarProf.setText("CADASTRAR ");
+        btnCadastrarProf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarProfActionPerformed(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
+
+        jButton1.setText("EDITAR");
+
+        jButton2.setText("EXCLUIR");
+
+        jButton3.setText("CANCELAR");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,6 +86,12 @@ public class CadProfessor extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(btnCadastrarProf)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
@@ -114,7 +133,11 @@ public class CadProfessor extends javax.swing.JDialog {
                     .addComponent(jLabel5)
                     .addComponent(edtMateria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnCadastrarProf)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCadastrarProf)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                 .addContainerGap())
@@ -122,10 +145,27 @@ public class CadProfessor extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void limparCampos(){
+        edtCpf.setText("");
+        edtIdade.setText("");
+        edtMateria.setText("");
+        edtNome.setText("");
+        
+        habilitarCampos(false);
+    }
+    private void habilitarCampos(Boolean habilitar){
+        edtCpf.setEnabled(habilitar);
+        edtIdade.setEnabled(habilitar);
+        edtMateria.setEnabled(habilitar);
+        edtNome.setEnabled(habilitar);
+    }
     private void edtCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtCpfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_edtCpfActionPerformed
+
+    private void btnCadastrarProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarProfActionPerformed
+        
+    }//GEN-LAST:event_btnCadastrarProfActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,6 +215,9 @@ public class CadProfessor extends javax.swing.JDialog {
     private javax.swing.JTextField edtIdade;
     private javax.swing.JTextField edtMateria;
     private javax.swing.JTextField edtNome;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

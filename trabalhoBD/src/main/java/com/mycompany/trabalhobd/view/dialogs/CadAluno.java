@@ -10,12 +10,11 @@ package com.mycompany.trabalhobd.view.dialogs;
  */
 public class CadAluno extends javax.swing.JDialog {
 
-    /**
-     * Creates new form CadDisciplina
-     */
+    private Boolean editando;
     public CadAluno(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        editando = false;
     }
 
     /**
@@ -37,9 +36,12 @@ public class CadAluno extends javax.swing.JDialog {
         edtCpf = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         edtMatricula = new javax.swing.JTextField();
-        btnCadastrarAluno = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -61,11 +63,27 @@ public class CadAluno extends javax.swing.JDialog {
             }
         });
 
-        btnCadastrarAluno.setText("CADASTRAR ALUNO");
+        btnCadastrar.setText("CADASTRAR ");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
+
+        btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setText("EXCLUIR");
+
+        btnCancelar.setText("CANCELAR");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,7 +94,13 @@ public class CadAluno extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCadastrarAluno)
+                        .addComponent(btnCadastrar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExcluir)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,7 +140,11 @@ public class CadAluno extends javax.swing.JDialog {
                     .addComponent(jLabel9)
                     .addComponent(edtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnCadastrarAluno)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCadastrar)
+                    .addComponent(btnEditar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnCancelar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
                 .addContainerGap())
@@ -124,10 +152,31 @@ public class CadAluno extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void limparCampos(){
+        edtCpf.setText("");
+        edtIdade.setText("");
+        edtMatricula.setText("");
+        edtNome.setText("");
+        
+        habilitarCampos(false);
+    }
+    private void habilitarCampos(Boolean habilitar){
+        edtCpf.setEnabled(habilitar);
+        edtIdade.setEnabled(habilitar);
+        edtMatricula.setEnabled(habilitar);
+        edtNome.setEnabled(habilitar);
+    }
     private void edtMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtMatriculaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_edtMatriculaActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,7 +224,10 @@ public class CadAluno extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCadastrarAluno;
+    private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JTextField edtCpf;
     private javax.swing.JTextField edtIdade;
     private javax.swing.JTextField edtMatricula;

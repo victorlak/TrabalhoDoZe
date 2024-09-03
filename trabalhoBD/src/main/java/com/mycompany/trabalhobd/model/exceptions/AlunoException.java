@@ -8,6 +8,9 @@ package com.mycompany.trabalhobd.model.exceptions;
  *
  * @author USUARIO
  */
-public class AlunoException {
-    
+public class AlunoException extends RuntimeException{
+    public AlunoException(String msg){
+        super(msg);
+    }
 }
+

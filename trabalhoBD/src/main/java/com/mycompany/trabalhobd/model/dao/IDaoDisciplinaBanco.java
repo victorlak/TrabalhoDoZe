@@ -14,15 +14,7 @@ import java.util.ArrayList;
 
 /**
  *
- * void save(T objT);
-    
-    void update(String codObgT, T objT);
-    
-    void delete(String codObgT);
-    
-    T find(String codObgT);
-    
-    List<T> findAll();
+ * 
  * @author USUARIO
  */
 public class IDaoDisciplinaBanco implements IDao{

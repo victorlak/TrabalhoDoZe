@@ -8,6 +8,9 @@ package com.mycompany.trabalhobd.model.exceptions;
  *
  * @author USUARIO
  */
-public class ProfessorException {
-    
+public class ProfessorException extends RuntimeException{
+    public ProfessorException(String msg){
+        super(msg);
+    }
 }
+

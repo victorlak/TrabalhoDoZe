@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class CadDisciplina extends javax.swing.JDialog {
 
     private Boolean editando;
-    String codigoEditando;
+    private String codigoEditando;
     DisciplinaController disciplinaController;
     
     public CadDisciplina(java.awt.Frame parent, boolean modal) throws SQLException {
@@ -183,7 +183,7 @@ public class CadDisciplina extends javax.swing.JDialog {
     private void btnCadastrarDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarDisciplinaActionPerformed
         System.out.println("fghjklkjhgfdfghjklç");
         if(this.editando){
-           disciplinaController.atualizarDisciplina(edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());
+           disciplinaController.atualizarDisciplina(edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());         
         }else{
             disciplinaController.adicionarDisciplina(edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());
         }

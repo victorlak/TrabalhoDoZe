@@ -15,6 +15,11 @@ public class Aluno extends Pessoa{
         this.matricula = matricula;
     }
 
+    public Aluno() {
+        super();
+    }
+    
+
     public String getMatricula() {
         return matricula;
     }

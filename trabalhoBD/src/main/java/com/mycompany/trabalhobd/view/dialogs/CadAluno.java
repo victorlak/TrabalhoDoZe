@@ -4,6 +4,16 @@
  */
 package com.mycompany.trabalhobd.view.dialogs;
 
+import com.mycompany.trabalhobd.connection.SQLiteConnector;
+import com.mycompany.trabalhobd.controller.AlunoController;
+import com.mycompany.trabalhobd.model.dao.IDao;
+import com.mycompany.trabalhobd.model.dao.IDaoAlunoBanco;
+import com.mycompany.trabalhobd.model.entidades.Aluno;
+import com.mycompany.trabalhobd.view.tableModels.TMCadAluno;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author USUARIO
@@ -11,10 +21,20 @@ package com.mycompany.trabalhobd.view.dialogs;
 public class CadAluno extends javax.swing.JDialog {
 
     private Boolean editando;
-    public CadAluno(java.awt.Frame parent, boolean modal) {
+    private AlunoController alunoController;
+    public CadAluno(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
-        initComponents();
+        
         editando = false;
+        SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
+        IDao repositorio = new IDaoAlunoBanco(conector.getConnection());
+        this.alunoController = new AlunoController(repositorio);
+        
+        initComponents();
+        limparCampos();
+        setLocationRelativeTo(parent);
+        atualizarTabela();
+        
     }
 
     /**
@@ -37,11 +57,12 @@ public class CadAluno extends javax.swing.JDialog {
         jLabel9 = new javax.swing.JLabel();
         edtMatricula = new javax.swing.JTextField();
         btnCadastrar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        btnNovo = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        grdAlunos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -70,10 +91,6 @@ public class CadAluno extends javax.swing.JDialog {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
         btnEditar.setText("EDITAR");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,6 +101,26 @@ public class CadAluno extends javax.swing.JDialog {
         btnExcluir.setText("EXCLUIR");
 
         btnCancelar.setText("CANCELAR");
+
+        btnNovo.setText("NOVO");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
+        grdAlunos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(grdAlunos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,10 +138,12 @@ public class CadAluno extends javax.swing.JDialog {
                         .addComponent(btnExcluir)
                         .addGap(18, 18, 18)
                         .addComponent(btnCancelar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNovo)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane2)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -121,7 +160,7 @@ public class CadAluno extends javax.swing.JDialog {
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(edtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 54, Short.MAX_VALUE)))
+                                .addGap(0, 20, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -144,9 +183,10 @@ public class CadAluno extends javax.swing.JDialog {
                     .addComponent(btnCadastrar)
                     .addComponent(btnEditar)
                     .addComponent(btnExcluir)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnNovo))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -166,79 +206,59 @@ public class CadAluno extends javax.swing.JDialog {
         edtMatricula.setEnabled(habilitar);
         edtNome.setEnabled(habilitar);
     }
+    private void atualizarTabela(){
+        List<Aluno> alunos = this.alunoController.findAllAluno();
+        alunos.toString();
+        TMCadAluno tabelaAluno = new TMCadAluno(alunos);
+        grdAlunos.setModel(tabelaAluno);
+    }
+
     private void edtMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtMatriculaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_edtMatriculaActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        // TODO add your handling code here:
+        if(this.editando){
+            alunoController.atualizarAluno(edtNome.getText(), edtCpf.getText(), edtIdade.getText(), edtMatricula.getText());
+            habilitarCampos(false);
+        }else{
+            System.out.println("entrou");
+            alunoController.adicionarAluno(edtNome.getText(), edtCpf.getText(), edtIdade.getText(), edtMatricula.getText());
+            limparCampos();
+        }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        // TODO add your handling code here:
+        habilitarCampos(true);
+    }//GEN-LAST:event_btnNovoActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                CadAluno dialog = new CadAluno(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnNovo;
     private javax.swing.JTextField edtCpf;
     private javax.swing.JTextField edtIdade;
     private javax.swing.JTextField edtMatricula;
     private javax.swing.JTextField edtNome;
+    private javax.swing.JTable grdAlunos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

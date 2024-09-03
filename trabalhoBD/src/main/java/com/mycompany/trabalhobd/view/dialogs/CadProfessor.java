@@ -14,6 +14,8 @@ public class CadProfessor extends javax.swing.JDialog {
     public CadProfessor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        limparCampos();
+        setLocationRelativeTo(parent);
         editando = false;
     }
 
@@ -42,6 +44,7 @@ public class CadProfessor extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        btnNovo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -80,6 +83,13 @@ public class CadProfessor extends javax.swing.JDialog {
 
         jButton3.setText("CANCELAR");
 
+        btnNovo.setText("NOVO");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -92,6 +102,8 @@ public class CadProfessor extends javax.swing.JDialog {
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
+                .addGap(18, 18, 18)
+                .addComponent(btnNovo)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
@@ -137,7 +149,8 @@ public class CadProfessor extends javax.swing.JDialog {
                     .addComponent(btnCadastrarProf)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(btnNovo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                 .addContainerGap())
@@ -166,6 +179,11 @@ public class CadProfessor extends javax.swing.JDialog {
     private void btnCadastrarProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarProfActionPerformed
         
     }//GEN-LAST:event_btnCadastrarProfActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        // TODO add your handling code here:
+        habilitarCampos(true);
+    }//GEN-LAST:event_btnNovoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -211,6 +229,7 @@ public class CadProfessor extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrarProf;
+    private javax.swing.JButton btnNovo;
     private javax.swing.JTextField edtCpf;
     private javax.swing.JTextField edtIdade;
     private javax.swing.JTextField edtMateria;

@@ -25,6 +25,7 @@ public class Departamento extends javax.swing.JFrame {
      */
     public Departamento() throws SQLException  {
         initComponents();
+        setLocationRelativeTo(null);
         cadAluno = new CadAluno(this, true);
         cadDisciplina = new CadDisciplina(this, true);
         cadProfessor = new CadProfessor(this, true);

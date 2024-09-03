@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author USUARIO
  */
-public class IDaoAlunoBanco {
+public class IDaoAlunoBanco implements IDao{
     private Connection connection;
     
     public IDaoAlunoBanco(Connection connection) {
@@ -78,14 +78,14 @@ public class IDaoAlunoBanco {
         }
         return null;
     }
-    public List findAll() {
-        String query = "SELEC * FROM aluno";
-        List<Aluno> disciplinas = new ArrayList<>();
+    public List<Aluno> findAll() {
+        String query = "SELECT * FROM aluno";
+        List<Aluno> alunos = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet retorno = stmt.executeQuery()) {
 
             while (retorno.next()) {
-                disciplinas.add(new Aluno(
+                alunos.add(new Aluno(
                     retorno.getString("nome"),
                     retorno.getString("cpf"),
                     retorno.getString("idade"),
@@ -95,7 +95,7 @@ public class IDaoAlunoBanco {
         } catch (SQLException e) {
             System.out.println("Erro ao listar alunos: " + e.getMessage());
         }
-        return disciplinas;
+        return alunos;
     }
 
 }

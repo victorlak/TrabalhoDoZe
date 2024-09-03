@@ -23,6 +23,8 @@ public class CadDisciplina extends javax.swing.JDialog {
     public CadDisciplina(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
         initComponents();
+        limparCampos();
+        setLocationRelativeTo(parent);
         SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
         IDao repositorio = new IDaoDisciplinaBanco(conector.getConnection());
         disciplinaController = new DisciplinaController(repositorio);
@@ -53,6 +55,7 @@ public class CadDisciplina extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        btnNovo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -104,6 +107,13 @@ public class CadDisciplina extends javax.swing.JDialog {
             }
         });
 
+        btnNovo.setText("NOVO");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,7 +144,9 @@ public class CadDisciplina extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton3)))
+                                .addComponent(jButton3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnNovo)))
                         .addGap(0, 14, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -156,7 +168,8 @@ public class CadDisciplina extends javax.swing.JDialog {
                     .addComponent(btnCadastrarDisciplina)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(btnNovo))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                 .addContainerGap())
@@ -186,6 +199,7 @@ public class CadDisciplina extends javax.swing.JDialog {
            disciplinaController.atualizarDisciplina(edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());         
         }else{
             disciplinaController.adicionarDisciplina(edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());
+            limparCampos();
         }
     }//GEN-LAST:event_btnCadastrarDisciplinaActionPerformed
 
@@ -201,6 +215,11 @@ public class CadDisciplina extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        // TODO add your handling code here:
+        habilitarCampos(true);
+    }//GEN-LAST:event_btnNovoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -208,6 +227,7 @@ public class CadDisciplina extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrarDisciplina;
+    private javax.swing.JButton btnNovo;
     private javax.swing.JTextField edtCodigo;
     private javax.swing.JTextField edtNome;
     private javax.swing.JTextField edtProfessorMinistrante;

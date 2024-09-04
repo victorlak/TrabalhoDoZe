@@ -13,6 +13,7 @@ import com.mycompany.trabalhobd.view.tableModels.TMCadAluno;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,6 +23,7 @@ public class CadAluno extends javax.swing.JDialog {
 
     private Boolean editando;
     private AlunoController alunoController;
+    private String cpfAntigo;
     public CadAluno(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
         
@@ -29,7 +31,7 @@ public class CadAluno extends javax.swing.JDialog {
         SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
         IDao repositorio = new IDaoAlunoBanco(conector.getConnection());
         this.alunoController = new AlunoController(repositorio);
-        
+        this.cpfAntigo = "";
         initComponents();
         limparCampos();
         setLocationRelativeTo(parent);
@@ -99,6 +101,11 @@ public class CadAluno extends javax.swing.JDialog {
         });
 
         btnExcluir.setText("EXCLUIR");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("CANCELAR");
 
@@ -200,6 +207,12 @@ public class CadAluno extends javax.swing.JDialog {
         
         habilitarCampos(false);
     }
+    private void objetoParaCampos(Aluno aluno){
+        edtCpf.setText(aluno.getCpf());
+        edtIdade.setText(aluno.getIdade());
+        edtMatricula.setText(aluno.getMatricula());
+        edtNome.setText(aluno.getNome());
+    }
     private void habilitarCampos(Boolean habilitar){
         edtCpf.setEnabled(habilitar);
         edtIdade.setEnabled(habilitar);
@@ -215,27 +228,71 @@ public class CadAluno extends javax.swing.JDialog {
 
     private void edtMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtMatriculaActionPerformed
         // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_edtMatriculaActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         if(this.editando){
-            alunoController.atualizarAluno(edtNome.getText(), edtCpf.getText(), edtIdade.getText(), edtMatricula.getText());
-            habilitarCampos(false);
+            alunoController.atualizarAluno(cpfAntigo, edtNome.getText(), edtCpf.getText(), edtIdade.getText(), edtMatricula.getText());
         }else{
-            System.out.println("entrou");
             alunoController.adicionarAluno(edtNome.getText(), edtCpf.getText(), edtIdade.getText(), edtMatricula.getText());
+            }
             limparCampos();
-        }
+            habilitarCampos(false);
+            editando = false;
+            atualizarTabela();
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
+       Aluno alunoEscolhido = this.getObjetoSelecionadoNaGrid();
+       
+       String CPFEscolhido = alunoEscolhido.getCpf();
+
+        Aluno alunoEditando = alunoController.findAluno(CPFEscolhido);
+
+        if (alunoEditando == null) {
+            JOptionPane.showMessageDialog(this, "Não existe aluno com esse cpf.");
+            this.editando = false;
+        } else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            
+            this.objetoParaCampos(alunoEditando);
+            this.editando = true;
+            this.cpfAntigo = alunoEditando.getCpf();
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         // TODO add your handling code here:
         habilitarCampos(true);
     }//GEN-LAST:event_btnNovoActionPerformed
+    private void grdAlunoMouseClicked(java.awt.event.MouseEvent evt) {                                       
+       Aluno a = this.getObjetoSelecionadoNaGrid();
+       this.objetoParaCampos(a);
+    }
+    
+    public Aluno getObjetoSelecionadoNaGrid() {
+        int linhaSelecionada = grdAlunos.getSelectedRow();
+
+        if (linhaSelecionada >= 0) {
+            TMCadAluno tmCadAluno = (TMCadAluno) grdAlunos.getModel();
+
+             Aluno aluno = tmCadAluno.getObjetoAluno(linhaSelecionada);
+            return aluno;
+        }
+        
+        return null;
+    }
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+        String cpf = JOptionPane.showInputDialog(this,"Informe o CPF do aluno:");
+        System.out.println(cpf);
+        alunoController.deleteAluno(cpf);
+        atualizarTabela();
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments

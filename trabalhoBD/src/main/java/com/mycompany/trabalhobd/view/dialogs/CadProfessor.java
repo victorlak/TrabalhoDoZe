@@ -4,6 +4,16 @@
  */
 package com.mycompany.trabalhobd.view.dialogs;
 
+import com.mycompany.trabalhobd.connection.SQLiteConnector;
+import com.mycompany.trabalhobd.controller.ProfessorController;
+import com.mycompany.trabalhobd.model.dao.IDao;
+import com.mycompany.trabalhobd.model.dao.IDaoProfessorBanco;
+import com.mycompany.trabalhobd.model.entidades.Professor;
+import com.mycompany.trabalhobd.view.tableModels.TMCadProfessor;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author USUARIO
@@ -11,12 +21,19 @@ package com.mycompany.trabalhobd.view.dialogs;
 public class CadProfessor extends javax.swing.JDialog {
 
     Boolean editando;
-    public CadProfessor(java.awt.Frame parent, boolean modal) {
+    String cpfAntigo;
+    ProfessorController professorController;
+    public CadProfessor(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
+        editando = false;
+        SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
+        IDao repositorio = new IDaoProfessorBanco(conector.getConnection());
+        this.professorController = new ProfessorController(repositorio);
+        this.cpfAntigo = "";
         initComponents();
         limparCampos();
         setLocationRelativeTo(parent);
-        editando = false;
+        atualizarTabela();
     }
 
     /**
@@ -39,12 +56,12 @@ public class CadProfessor extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         edtMateria = new javax.swing.JTextField();
         btnCadastrarProf = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        grdProfessor = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -73,13 +90,19 @@ public class CadProfessor extends javax.swing.JDialog {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("EDITAR");
-
-        jButton2.setText("EXCLUIR");
+        btnExcluir.setText("EXCLUIR");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("CANCELAR");
 
@@ -90,6 +113,19 @@ public class CadProfessor extends javax.swing.JDialog {
             }
         });
 
+        grdProfessor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(grdProfessor);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,9 +133,9 @@ public class CadProfessor extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(btnCadastrarProf)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnEditar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnExcluir)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
                 .addGap(18, 18, 18)
@@ -108,7 +144,6 @@ public class CadProfessor extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -126,7 +161,8 @@ public class CadProfessor extends javax.swing.JDialog {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(edtMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 18, Short.MAX_VALUE)))
+                        .addGap(0, 18, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -147,12 +183,12 @@ public class CadProfessor extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrarProf)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(btnEditar)
+                    .addComponent(btnExcluir)
                     .addComponent(jButton3)
                     .addComponent(btnNovo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -166,18 +202,38 @@ public class CadProfessor extends javax.swing.JDialog {
         
         habilitarCampos(false);
     }
+    private void objetoParaCampos(Professor professor){
+        edtCpf.setText(professor.getCpf());
+        edtIdade.setText(professor.getIdade());
+        edtMateria.setText(professor.getMateria());
+        edtNome.setText(professor.getNome());
+    }
     private void habilitarCampos(Boolean habilitar){
         edtCpf.setEnabled(habilitar);
         edtIdade.setEnabled(habilitar);
         edtMateria.setEnabled(habilitar);
         edtNome.setEnabled(habilitar);
     }
+    private void atualizarTabela(){
+        List<Professor> professores = this.professorController.findAllProfessor();
+        professores.toString();
+        TMCadProfessor tabelaAluno = new TMCadProfessor(professores);
+        grdProfessor.setModel(tabelaAluno);
+    }
     private void edtCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtCpfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_edtCpfActionPerformed
 
     private void btnCadastrarProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarProfActionPerformed
-        
+        if(this.editando){
+            professorController.atualizarProfessor(cpfAntigo, edtNome.getText(), edtCpf.getText(), edtIdade.getText(), edtMateria.getText());
+        }else{
+            professorController.adicionarProfessor(edtNome.getText(), edtCpf.getText(), edtIdade.getText(), edtMateria.getText());
+            }
+            limparCampos();
+            habilitarCampos(false);
+            editando = false;
+            atualizarTabela();
     }//GEN-LAST:event_btnCadastrarProfActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -185,57 +241,66 @@ public class CadProfessor extends javax.swing.JDialog {
         habilitarCampos(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        Professor professorEscolhido = this.getObjetoSelecionadoNaGrid();
+       
+       String CPFEscolhido = professorEscolhido.getCpf();
+
+        Professor alunoEditando = professorController.findProfessor(CPFEscolhido);
+
+        if (alunoEditando == null) {
+            JOptionPane.showMessageDialog(this, "Não existe aluno com esse cpf.");
+            this.editando = false;
+        } else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            
+            this.objetoParaCampos(alunoEditando);
+            this.editando = true;
+            this.cpfAntigo = alunoEditando.getCpf();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+        String cpf = JOptionPane.showInputDialog(this,"Informe o CPF do professor:");
+        System.out.println(cpf);
+        professorController.deleteProfessor(cpf);
+        atualizarTabela();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+    private void grdProfessorMouseClicked(java.awt.event.MouseEvent evt) {                                       
+       Professor professor = this.getObjetoSelecionadoNaGrid();
+       this.objetoParaCampos(professor);
+    }
+    
+    public Professor getObjetoSelecionadoNaGrid() {
+        int linhaSelecionada = grdProfessor.getSelectedRow();
+
+        if (linhaSelecionada >= 0) {
+            TMCadProfessor tmCadProfessor = (TMCadProfessor) grdProfessor.getModel();
+
+             Professor professor = tmCadProfessor.getObjetoAluno(linhaSelecionada);
+            return professor;
+        }
+        
+        return null;
+    }
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadProfessor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadProfessor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadProfessor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadProfessor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                CadProfessor dialog = new CadProfessor(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrarProf;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JTextField edtCpf;
     private javax.swing.JTextField edtIdade;
     private javax.swing.JTextField edtMateria;
     private javax.swing.JTextField edtNome;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTable grdProfessor;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -243,7 +308,6 @@ public class CadProfessor extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

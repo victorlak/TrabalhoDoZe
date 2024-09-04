@@ -26,20 +26,17 @@ public class AlunoController {
         System.out.println(novoAluno.getNome());
         repositorio.save(novoAluno);
     }
-    public void atualizarAluno(String nome, String cpf, String idade, String matricula){
-        ValidacaoAluno valid = new ValidacaoAluno();
-        Aluno novoAluno = valid.validar( nome, cpf, idade,  matricula);
-        repositorio.update(cpf,novoAluno);
+    public void atualizarAluno(String cpfAntigo,String nome, String cpf, String idade, String matricula){
+        deleteAluno(cpfAntigo);
+        adicionarAluno(nome, cpf, idade, matricula);
+        
     }
-    public void deleteAluno(String nome, String cpf, String idade, String matricula){
-        ValidacaoAluno valid = new ValidacaoAluno();
-        Aluno novoAluno = valid.validar( nome, cpf, idade,  matricula);
+    public void deleteAluno(String cpf){
         repositorio.delete(cpf);
     }
-    public void findAluno(String nome, String cpf, String idade, String matricula){
-        ValidacaoAluno valid = new ValidacaoAluno();
-        Aluno novoAluno = valid.validar( nome, cpf, idade,  matricula);
-        repositorio.find(cpf);
+    public  Aluno findAluno(String cpf){
+        Aluno aluno = (Aluno) repositorio.find(cpf);
+        return aluno;
     }
     public List<Aluno> findAllAluno(){
         return repositorio.findAll();

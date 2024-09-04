@@ -75,7 +75,7 @@ public class IDaoDisciplinaBanco implements IDao{
             stmt.setString(1, codObgT);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Erro ao cadastrar a disciplina " + e.getMessage());
+            System.out.println("Erro ao deletar a disciplina " + e.getMessage());
         }
     }
 
@@ -94,7 +94,7 @@ public class IDaoDisciplinaBanco implements IDao{
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao cadastrar a disciplina " + e.getMessage());
+            System.out.println("Erro ao encontrar disciplina " + e.getMessage());
         }
         return null;
     }
@@ -114,7 +114,7 @@ public class IDaoDisciplinaBanco implements IDao{
                 ));
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao listar alunos: " + e.getMessage());
+            System.out.println("Erro ao listar disciplina: " + e.getMessage());
         }
         return disciplinas;
     }

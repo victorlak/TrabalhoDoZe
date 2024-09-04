@@ -31,6 +31,9 @@ public class TMCadAluno extends AbstractTableModel{
     public int getColumnCount() {
         return 4;
     }
+    public Aluno getObjetoAluno(int row){
+       return this.alunos.get(row);
+    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {

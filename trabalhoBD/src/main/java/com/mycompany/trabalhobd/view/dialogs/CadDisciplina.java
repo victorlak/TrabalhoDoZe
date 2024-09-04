@@ -8,7 +8,10 @@ import com.mycompany.trabalhobd.connection.SQLiteConnector;
 import com.mycompany.trabalhobd.controller.DisciplinaController;
 import com.mycompany.trabalhobd.model.dao.IDao;
 import com.mycompany.trabalhobd.model.dao.IDaoDisciplinaBanco;
+import com.mycompany.trabalhobd.model.entidades.Disciplina;
+import com.mycompany.trabalhobd.view.tableModels.TMCadDisciplina;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -22,14 +25,17 @@ public class CadDisciplina extends javax.swing.JDialog {
     
     public CadDisciplina(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
-        initComponents();
-        limparCampos();
-        setLocationRelativeTo(parent);
+        
         SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
         IDao repositorio = new IDaoDisciplinaBanco(conector.getConnection());
         disciplinaController = new DisciplinaController(repositorio);
         editando = false;
         codigoEditando = null;
+        
+        initComponents();
+        limparCampos();
+        setLocationRelativeTo(parent);
+        atualizarTabela();
     }
 
     /**
@@ -49,13 +55,13 @@ public class CadDisciplina extends javax.swing.JDialog {
         edtNome = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         edtProfessorMinistrante = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         btnCadastrarDisciplina = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        grdDisciplina = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -75,10 +81,6 @@ public class CadDisciplina extends javax.swing.JDialog {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
         btnCadastrarDisciplina.setText("CADASTRAR");
         btnCadastrarDisciplina.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,24 +88,24 @@ public class CadDisciplina extends javax.swing.JDialog {
             }
         });
 
-        jButton1.setText("EDITAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnEditarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("EXCLUIR");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnExcluir.setText("EXCLUIR");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnExcluirActionPerformed(evt);
             }
         });
 
-        jButton3.setText("CANCELAR");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -114,17 +116,40 @@ public class CadDisciplina extends javax.swing.JDialog {
             }
         });
 
+        grdDisciplina.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(grdDisciplina);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCadastrarDisciplina)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEditar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnExcluir)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancelar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnNovo))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -136,17 +161,7 @@ public class CadDisciplina extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(edtProfessorMinistrante, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnCadastrarDisciplina)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnNovo)))
+                                .addComponent(edtProfessorMinistrante, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 14, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -166,13 +181,13 @@ public class CadDisciplina extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrarDisciplina)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
+                    .addComponent(btnEditar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnCancelar)
                     .addComponent(btnNovo))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -184,6 +199,11 @@ public class CadDisciplina extends javax.swing.JDialog {
         
         habilitarCampos(false);
     }
+    private void atualizarTabela(){
+        List<Disciplina> disciplina = this.disciplinaController.findAllDisciplina();
+        TMCadDisciplina tabelaDisciplina = new TMCadDisciplina(disciplina);
+        grdDisciplina.setModel(tabelaDisciplina);
+    }
     private void habilitarCampos(Boolean habilitar){
         edtCodigo.setEnabled(habilitar);
         edtProfessorMinistrante.setEnabled(habilitar);
@@ -194,26 +214,29 @@ public class CadDisciplina extends javax.swing.JDialog {
     }//GEN-LAST:event_edtProfessorMinistranteActionPerformed
 
     private void btnCadastrarDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarDisciplinaActionPerformed
-        System.out.println("fghjklkjhgfdfghjklç");
+
         if(this.editando){
-           disciplinaController.atualizarDisciplina(edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());         
+           disciplinaController.atualizarDisciplina(codigoEditando, edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());         
         }else{
             disciplinaController.adicionarDisciplina(edtCodigo.getText(), edtNome.getText(), edtProfessorMinistrante.getText());
-            limparCampos();
         }
+        limparCampos();
+        habilitarCampos(false);
+        editando = false;
+        atualizarTabela();
     }//GEN-LAST:event_btnCadastrarDisciplinaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         // TODO add your handling code here:
@@ -227,19 +250,19 @@ public class CadDisciplina extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrarDisciplina;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JTextField edtCodigo;
     private javax.swing.JTextField edtNome;
     private javax.swing.JTextField edtProfessorMinistrante;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JTable grdDisciplina;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

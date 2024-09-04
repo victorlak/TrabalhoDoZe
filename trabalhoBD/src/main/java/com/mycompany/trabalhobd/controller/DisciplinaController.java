@@ -7,6 +7,7 @@ package com.mycompany.trabalhobd.controller;
 import com.mycompany.trabalhobd.model.dao.IDao;
 import com.mycompany.trabalhobd.model.entidades.Disciplina;
 import com.mycompany.trabalhobd.model.valid.ValidacaoDisciplina;
+import java.util.List;
 
 /**
  *
@@ -25,14 +26,11 @@ public class DisciplinaController {
         System.out.println("BBBBBBBBBBB");
         repositorio.save(novaDisciplina);
     }
-    public void atualizarDisciplina(String codigo, String nome, String professorMinistrante){
-        ValidacaoDisciplina valid = new ValidacaoDisciplina();
-        Disciplina novaDisciplina = valid.validar(codigo, nome, professorMinistrante);
-        repositorio.update(codigo,novaDisciplina);
+    public void atualizarDisciplina(String codAntigo,String codigo, String nome, String professorMinistrante){
+        deleteDisciplina(codAntigo);
+        adicionarDisciplina(codigo,nome,professorMinistrante);
     }
-    public void deleteDisciplina(String codigo, String nome, String professorMinistrante){
-        ValidacaoDisciplina valid = new ValidacaoDisciplina();
-        Disciplina novaDisciplina = valid.validar(codigo, nome, professorMinistrante);
+    public void deleteDisciplina(String codigo){
         repositorio.delete(codigo);
     }
     public void findDisciplina(String codigo, String nome, String professorMinistrante){
@@ -40,7 +38,7 @@ public class DisciplinaController {
         Disciplina novaDisciplina = valid.validar(codigo, nome, professorMinistrante);
         repositorio.find(codigo);
     }
-    public void findAllDisciplina(){
-        repositorio.findAll();
+    public List<Disciplina> findAllDisciplina(){
+        return repositorio.findAll();
     }
 }

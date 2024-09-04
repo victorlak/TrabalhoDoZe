@@ -19,7 +19,7 @@ public class TMCadDisciplina extends AbstractTableModel{
     private final int COL_PROFM = 2;
     
     public TMCadDisciplina(List<Disciplina> disciplina){
-        this.disciplinas = disciplinas;
+        this.disciplinas = disciplina;
     }
     @Override
     public int getRowCount() {
@@ -28,7 +28,7 @@ public class TMCadDisciplina extends AbstractTableModel{
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 3;
     }
     public Disciplina getObjetoAluno(int row){
        return this.disciplinas.get(row);
@@ -50,6 +50,7 @@ public class TMCadDisciplina extends AbstractTableModel{
         return"-";
     }
     
+    @Override
     public String getColumnName(int columnIndex){
         if(columnIndex ==COL_COD)
             return "COD";

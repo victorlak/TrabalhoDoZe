@@ -101,7 +101,7 @@ public class IDaoDisciplinaBanco implements IDao{
 
     @Override
     public List findAll() {
-        String query = "SELEC * FROM disciplina";
+        String query = "SELECT * FROM disciplina";
         List<Disciplina> disciplinas = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet retorno = stmt.executeQuery()) {

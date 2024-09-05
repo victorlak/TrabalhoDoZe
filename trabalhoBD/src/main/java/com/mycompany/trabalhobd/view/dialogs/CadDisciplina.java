@@ -12,6 +12,7 @@ import com.mycompany.trabalhobd.model.entidades.Disciplina;
 import com.mycompany.trabalhobd.view.tableModels.TMCadDisciplina;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -209,6 +210,11 @@ public class CadDisciplina extends javax.swing.JDialog {
         edtProfessorMinistrante.setEnabled(habilitar);
         edtNome.setEnabled(habilitar);
     }
+    private void objetoParaCampos(Disciplina disciplina){
+        edtCodigo.setText(disciplina.getCodigo());
+        edtProfessorMinistrante.setText(disciplina.getProfMinistrante());
+        edtNome.setText(disciplina.getNome());
+    }
     private void edtProfessorMinistranteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtProfessorMinistranteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_edtProfessorMinistranteActionPerformed
@@ -228,10 +234,30 @@ public class CadDisciplina extends javax.swing.JDialog {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
+        Disciplina disciplinaEscolhido = this.getObjetoSelecionadoNaGrid();
+       
+       String CodEscolhido = disciplinaEscolhido.getCodigo();
+
+        Disciplina disciplinaEditando = disciplinaController.findDisciplina(CodEscolhido);
+
+        if (disciplinaEditando == null) {
+            JOptionPane.showMessageDialog(this, "Não existe disciplina com esse codigo.");
+            this.editando = false;
+        } else {
+            this.limparCampos();
+            this.habilitarCampos(true);
+            
+            this.objetoParaCampos(disciplinaEditando);
+            this.editando = true;
+            this.codigoEditando = disciplinaEditando.getCodigo();
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
+        String cod = JOptionPane.showInputDialog(this,"Informe o Cod da disciplina:");
+        disciplinaController.deleteDisciplina(cod);
+        atualizarTabela();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -242,7 +268,23 @@ public class CadDisciplina extends javax.swing.JDialog {
         // TODO add your handling code here:
         habilitarCampos(true);
     }//GEN-LAST:event_btnNovoActionPerformed
+    private void grdDisciplinaMouseClicked(java.awt.event.MouseEvent evt) {                                       
+       Disciplina disciplina = this.getObjetoSelecionadoNaGrid();
+       this.objetoParaCampos(disciplina);
+    }
+    
+    public Disciplina getObjetoSelecionadoNaGrid() {
+        int linhaSelecionada = grdDisciplina.getSelectedRow();
 
+        if (linhaSelecionada >= 0) {
+            TMCadDisciplina tmCadDisciplina = (TMCadDisciplina) grdDisciplina.getModel();
+
+             Disciplina d = tmCadDisciplina.getObjetoDisciplina(linhaSelecionada);
+            return d;
+        }
+        
+        return null;
+    }
     /**
      * @param args the command line arguments
      */

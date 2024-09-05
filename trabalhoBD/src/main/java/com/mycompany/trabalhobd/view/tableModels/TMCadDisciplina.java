@@ -30,7 +30,7 @@ public class TMCadDisciplina extends AbstractTableModel{
     public int getColumnCount() {
         return 3;
     }
-    public Disciplina getObjetoAluno(int row){
+    public Disciplina getObjetoDisciplina(int row){
        return this.disciplinas.get(row);
     }
 

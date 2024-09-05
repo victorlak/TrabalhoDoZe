@@ -33,10 +33,9 @@ public class DisciplinaController {
     public void deleteDisciplina(String codigo){
         repositorio.delete(codigo);
     }
-    public void findDisciplina(String codigo, String nome, String professorMinistrante){
-        ValidacaoDisciplina valid = new ValidacaoDisciplina();
-        Disciplina novaDisciplina = valid.validar(codigo, nome, professorMinistrante);
-        repositorio.find(codigo);
+    public Disciplina findDisciplina(String codigo){
+        Disciplina disciplina = (Disciplina) repositorio.find(codigo);
+        return disciplina;
     }
     public List<Disciplina> findAllDisciplina(){
         return repositorio.findAll();

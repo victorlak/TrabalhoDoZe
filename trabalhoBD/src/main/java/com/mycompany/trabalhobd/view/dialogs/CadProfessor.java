@@ -8,6 +8,7 @@ import com.mycompany.trabalhobd.connection.SQLiteConnector;
 import com.mycompany.trabalhobd.controller.ProfessorController;
 import com.mycompany.trabalhobd.model.dao.IDao;
 import com.mycompany.trabalhobd.model.dao.IDaoProfessorBanco;
+import com.mycompany.trabalhobd.model.dao.IDaoProfessorFile;
 import com.mycompany.trabalhobd.model.entidades.Professor;
 import com.mycompany.trabalhobd.view.tableModels.TMCadProfessor;
 import java.sql.SQLException;
@@ -20,14 +21,19 @@ import javax.swing.JOptionPane;
  */
 public class CadProfessor extends javax.swing.JDialog {
 
-    Boolean editando;
-    String cpfAntigo;
-    ProfessorController professorController;
+    private Boolean editando;
+    private String cpfAntigo;
+    private IDao repositorio;
+    private ProfessorController professorController;
     public CadProfessor(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
         editando = false;
-        SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
-        IDao repositorio = new IDaoProfessorBanco(conector.getConnection());
+        
+        repositorio = new IDaoProfessorFile("ListagemProfessores.json");
+        
+        //SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
+        //repositorio = new IDaoProfessorBanco(conector.getConnection());
+        
         this.professorController = new ProfessorController(repositorio);
         this.cpfAntigo = "";
         initComponents();
@@ -105,6 +111,11 @@ public class CadProfessor extends javax.swing.JDialog {
         });
 
         jButton3.setText("CANCELAR");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         btnNovo.setText("NOVO");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -266,9 +277,21 @@ public class CadProfessor extends javax.swing.JDialog {
         // TODO add your handling code here:
         String cpf = JOptionPane.showInputDialog(this,"Informe o CPF do professor:");
         System.out.println(cpf);
+        
+        
         professorController.deleteProfessor(cpf);
+        
         atualizarTabela();
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        edtCpf.setText("");
+        edtIdade.setText("");
+        edtMateria.setText("");
+        edtNome.setText("");
+        habilitarCampos(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
     private void grdProfessorMouseClicked(java.awt.event.MouseEvent evt) {                                       
        Professor professor = this.getObjetoSelecionadoNaGrid();
        this.objetoParaCampos(professor);

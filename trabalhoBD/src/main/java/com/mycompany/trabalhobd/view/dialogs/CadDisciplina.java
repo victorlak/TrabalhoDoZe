@@ -8,6 +8,7 @@ import com.mycompany.trabalhobd.connection.SQLiteConnector;
 import com.mycompany.trabalhobd.controller.DisciplinaController;
 import com.mycompany.trabalhobd.model.dao.IDao;
 import com.mycompany.trabalhobd.model.dao.IDaoDisciplinaBanco;
+import com.mycompany.trabalhobd.model.dao.IDaoDisciplinaFile;
 import com.mycompany.trabalhobd.model.entidades.Disciplina;
 import com.mycompany.trabalhobd.view.tableModels.TMCadDisciplina;
 import java.sql.SQLException;
@@ -22,13 +23,17 @@ public class CadDisciplina extends javax.swing.JDialog {
 
     private Boolean editando;
     private String codigoEditando;
-    DisciplinaController disciplinaController;
+    private IDao repositorio;
+    private DisciplinaController disciplinaController;
     
     public CadDisciplina(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
         
-        SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
-        IDao repositorio = new IDaoDisciplinaBanco(conector.getConnection());
+        repositorio = new IDaoDisciplinaFile("ListagemDisciplinas.json");
+        
+        //SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
+        //repositorio = new IDaoDisciplinaBanco(conector.getConnection());
+        
         disciplinaController = new DisciplinaController(repositorio);
         editando = false;
         codigoEditando = null;
@@ -256,12 +261,17 @@ public class CadDisciplina extends javax.swing.JDialog {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
         String cod = JOptionPane.showInputDialog(this,"Informe o Cod da disciplina:");
+        
         disciplinaController.deleteDisciplina(cod);
         atualizarTabela();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
+        edtCodigo.setText("");
+        edtNome.setText("");
+        edtProfessorMinistrante.setText("");
+        habilitarCampos(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed

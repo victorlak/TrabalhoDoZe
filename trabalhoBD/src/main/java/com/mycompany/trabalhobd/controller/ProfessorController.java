@@ -25,10 +25,10 @@ public class ProfessorController {
         Professor Professor = valid.validar( nome, cpf, idade,  materia);
         repositorio.save(Professor);
     }
-    public void atualizarProfessor(String cpfAntigo,String nome, String cpf, String idade, String matricula){
-        deleteProfessor(cpfAntigo);
-        adicionarProfessor(nome, cpf, idade, matricula);
-        
+    public void atualizarProfessor(String cpfAntigo,String nome, String cpf, String idade, String materia){
+        ValidacaoProfessor valid = new ValidacaoProfessor();
+        Professor Professor = valid.validar( nome, cpf, idade,  materia);
+        repositorio.update(cpfAntigo, Professor);
     }
     public void deleteProfessor(String cpf){
         repositorio.delete(cpf);

@@ -27,8 +27,9 @@ public class AlunoController {
         repositorio.save(novoAluno);
     }
     public void atualizarAluno(String cpfAntigo,String nome, String cpf, String idade, String matricula){
-        deleteAluno(cpfAntigo);
-        adicionarAluno(nome, cpf, idade, matricula);
+        ValidacaoAluno valid = new ValidacaoAluno();
+        Aluno novoAluno = valid.validar( nome, cpf, idade,  matricula);
+        repositorio.update(cpfAntigo, novoAluno);
         
     }
     public void deleteAluno(String cpf){

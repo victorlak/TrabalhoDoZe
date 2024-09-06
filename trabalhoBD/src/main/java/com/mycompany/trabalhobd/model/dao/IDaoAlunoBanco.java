@@ -38,15 +38,16 @@ public class IDaoAlunoBanco implements IDao{
     }
      public void update(String cpfObgT, Object objT) {
        Aluno aluno = (Aluno) objT;   
-        String query = "UPDATE aluno SET nome = ?,idade = ?, matricula = ?, WHERE cpf = ?";
+        String query = "UPDATE aluno SET nome = ?,idade = ?, matricula = ? WHERE cpf = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            String a = "";
             stmt.setString(1,aluno.getNome());
             stmt.setString(2, aluno.getIdade());
             stmt.setString(3, aluno.getMatricula());
             stmt.setString(4, cpfObgT);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Erro ao cadastrar a disciplina " + e.getMessage());
+            System.out.println("Erro ao cadastrar a Aluno " + e.getMessage());
         }
     }
     public void delete(String cpfObgT) {

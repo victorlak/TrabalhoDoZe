@@ -38,7 +38,7 @@ public class IDaoProfessorBanco implements IDao{
     }
      public void update(String cpfObgT, Object objT) {
        Professor professor = (Professor) objT;   
-        String query = "UPDATE professor SET cpf = ?, nome = ?,idade = ?, materia = ?, WHERE cpf = ?";
+        String query = "UPDATE professor SET cpf = ?, nome = ?,idade = ?, materia = ? WHERE cpf = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, professor.getCpf());
             stmt.setString(2,professor.getNome());

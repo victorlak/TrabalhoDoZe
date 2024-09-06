@@ -28,7 +28,7 @@ public class SQLiteConnector {
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + " cpf TEXT NOT NULL,"
                 + " nome TEXT NOT NULL,"
-                + " idade INTEGER NOT NULL,"
+                + " idade TEXT NOT NULL,"
                 + " matricula TEXT NOT NULL"
                 + ");";
         executarSQL(sql);

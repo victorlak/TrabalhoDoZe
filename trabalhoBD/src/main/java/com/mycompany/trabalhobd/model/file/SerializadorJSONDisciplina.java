@@ -6,19 +6,19 @@ package com.mycompany.trabalhobd.model.file;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.trabalhobd.model.entidades.Aluno;
+import com.mycompany.trabalhobd.model.entidades.Disciplina;
 import java.util.List;
 
 /**
  *
  * @author USUARIO
  */
-public class SerializadorJSONAluno {
-    public String toFile(List<Aluno> alunos) {
+public class SerializadorJSONDisciplina {
+    public String toFile(List<Disciplina> disciplinas) {
         try {
             // Convertendo objeto filme para JSON 
             ObjectMapper mapper = new ObjectMapper();
-            String jsonString = mapper.writeValueAsString(alunos);
+            String jsonString = mapper.writeValueAsString(disciplinas);
 
             return jsonString;
         } catch (Exception e) {
@@ -28,14 +28,14 @@ public class SerializadorJSONAluno {
     }
 
     // Desserializa JSON em formato String para um objeto Filme
-    public List<Aluno> fromFile(String jsonString) {
+    public List<Disciplina> fromFile(String jsonString) {
         try {
             ObjectMapper mapper = new ObjectMapper();
              
-            List<Aluno> alunos = mapper.readValue(jsonString, new TypeReference<List<Aluno>>() {});
+            List<Disciplina> disciplinas = mapper.readValue(jsonString, new TypeReference<List<Disciplina>>() {});
            // GerenciadorProduto produtos = mapper.readValue(jsonString, GerenciadorProduto.class);
             
-            return alunos;
+            return disciplinas;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

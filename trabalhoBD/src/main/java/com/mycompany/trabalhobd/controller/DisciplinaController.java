@@ -27,8 +27,9 @@ public class DisciplinaController {
         repositorio.save(novaDisciplina);
     }
     public void atualizarDisciplina(String codAntigo,String codigo, String nome, String professorMinistrante){
-        deleteDisciplina(codAntigo);
-        adicionarDisciplina(codigo,nome,professorMinistrante);
+        ValidacaoDisciplina valid = new ValidacaoDisciplina();
+        Disciplina novaDisciplina = valid.validar(codigo, nome, professorMinistrante);
+        repositorio.update(codAntigo, novaDisciplina);
     }
     public void deleteDisciplina(String codigo){
         repositorio.delete(codigo);

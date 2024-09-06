@@ -8,6 +8,7 @@ import com.mycompany.trabalhobd.connection.SQLiteConnector;
 import com.mycompany.trabalhobd.controller.AlunoController;
 import com.mycompany.trabalhobd.model.dao.IDao;
 import com.mycompany.trabalhobd.model.dao.IDaoAlunoBanco;
+import com.mycompany.trabalhobd.model.dao.IDaoAlunoFile;
 import com.mycompany.trabalhobd.model.entidades.Aluno;
 import com.mycompany.trabalhobd.view.tableModels.TMCadAluno;
 import java.sql.SQLException;
@@ -23,13 +24,18 @@ public class CadAluno extends javax.swing.JDialog {
 
     private Boolean editando;
     private AlunoController alunoController;
+    private IDao repositorio;
     private String cpfAntigo;
     public CadAluno(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
         
         editando = false;
-        SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
-        IDao repositorio = new IDaoAlunoBanco(conector.getConnection());
+        
+        repositorio = new IDaoAlunoFile("ListagemAlunos.json");
+        
+       //SQLiteConnector conector = new SQLiteConnector("banco.sqlite");
+       //repositorio = new IDaoAlunoBanco(conector.getConnection());
+        
         this.alunoController = new AlunoController(repositorio);
         this.cpfAntigo = "";
         initComponents();
@@ -108,6 +114,11 @@ public class CadAluno extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnNovo.setText("NOVO");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -290,9 +301,20 @@ public class CadAluno extends javax.swing.JDialog {
         // TODO add your handling code here:
         String cpf = JOptionPane.showInputDialog(this,"Informe o CPF do aluno:");
         System.out.println(cpf);
+        
         alunoController.deleteAluno(cpf);
         atualizarTabela();
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        edtCpf.setText("");
+        edtIdade.setText("");
+        edtMatricula.setText("");
+        edtNome.setText("");
+        this.editando = false;
+        habilitarCampos(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
